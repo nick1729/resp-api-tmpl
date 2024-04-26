@@ -1,0 +1,124 @@
+linters-settings:
+  dupl:
+    threshold: 200
+  funlen:
+    lines: 100
+    statements: 60
+  goconst:
+    min-len: 2
+    min-occurrences: 2
+  gocritic:
+    disabled-checks:
+      - unnamedResult
+    enabled-tags:
+      - diagnostic
+      - experimental
+      - opinionated
+      - performance
+      - style
+    settings:
+      hugeParam:
+        sizeThreshold: 256
+      rangeValCopy:
+        sizeThreshold: 256
+  gocyclo:
+    min-complexity: 30
+  cyclop:
+    max-complexity: 30
+  gci:
+    sections:
+      - standard
+      - default
+      - prefix(github.com/nick1729/resp-api-tmpl)
+  goimports:
+    local-prefixes: github.com/golangci/golangci-lint
+  golint:
+    min-confidence: 0
+  govet:
+    check-shadowing: true
+  lll:
+    line-length: 160
+  misspell:
+    locale: US
+  nakedret:
+    max-func-lines: 0
+  nestif:
+    min-complexity: 10
+  gomnd:
+    settings:
+      mnd:
+        ignored-functions:
+          - validate.*
+          - time.*
+        ignored-numbers: 0.,1.,2,3,4,5,24,100,255
+        ignored-files:
+          - .*_test.go
+  varnamelen:
+    ignore-names:
+      - c
+      - fn
+      - i
+      - in
+      - m
+      - ok
+      - p
+      - s
+      - tc
+      - tn
+      - tr
+      - tx
+      - v
+      - wg
+
+linters:
+  enable-all: true
+  disable:
+    - deadcode # deprecated since v1.49.0
+    - depguard # disabled because of list of acceptable packages
+    - exhaustivestruct # deprecated since v1.46.0
+    - exhaustruct # disabled because of missing field
+    - gochecknoglobals # disabled
+    - gochecknoinits # disabled
+    - goerr113 # disabled because of define dynamic errors
+    - gofumpt # disabled
+    - golint # deprecated since v1.41.0
+    - ifshort # deprecated since v1.48.0
+    - interfacer # deprecated since v1.38.0
+    - ireturn # disabled
+    - maligned # deprecated since v1.38.0
+    - nosnakecase # deprecated since v1.48.1
+    - promlinter # disabled
+    - scopelint # deprecated since v1.39.0
+    - structcheck # deprecated since v1.49.0
+    - tagliatelle # because mixed camel and snake case
+    - varcheck # deprecated since v1.49.0
+    - wrapcheck # disabled because of external package wrapping
+    - testpackage # disabled
+
+run:
+  timeout: 2m
+
+issues:
+  exclude-rules:
+    - path: internal/app/*.go
+      text: "blank-imports"
+
+    - path: _test\.go
+      linters:
+        - gomnd
+        - funlen
+        - gosec
+
+    - path: _test\.go
+      text: "G101"
+
+    - path: _test\.go
+      text: "composites"
+
+    - path: _test/\.go
+      text: "composites"
+
+    - path: _test\.go
+      linters:
+        - lll
+        - dupl
