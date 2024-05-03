@@ -4,13 +4,15 @@ import (
 	"os"
 	"strings"
 
-	"github.com/nick1729/resp-api-tmpl/internal/pkg/config"
 	"github.com/rs/zerolog"
+
+	"github.com/nick1729/resp-api-tmpl/internal/pkg/config"
 )
 
 const defaultLoglevel = zerolog.InfoLevel
 
-func Create(cfg config.Log) *zerolog.Logger {
+// Init - initialises logger.
+func Init(cfg config.Log) *zerolog.Logger {
 	levels := map[string]zerolog.Level{
 		"debug": zerolog.DebugLevel,
 		"info":  zerolog.InfoLevel,
@@ -23,7 +25,7 @@ func Create(cfg config.Log) *zerolog.Logger {
 		logLevel = defaultLoglevel
 	}
 
-	logger := zerolog.New(os.Stderr).Level(logLevel).With().Timestamp().Logger()
+	resp := zerolog.New(os.Stderr).Level(logLevel).With().Timestamp().Logger()
 
-	return &logger
+	return &resp
 }

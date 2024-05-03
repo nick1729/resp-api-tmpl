@@ -5,13 +5,13 @@ import (
 )
 
 type Postgres struct {
-	User     string `envconfig:"USER" required:"true"`
+	User     string `envconfig:"USER"     required:"true"`
 	Password string `envconfig:"PASSWORD" required:"true"`
-	Host     string `envconfig:"HOST" required:"true"`
-	Port     string `envconfig:"PORT" required:"true"`
+	Host     string `envconfig:"HOST"     required:"true"`
+	Port     string `envconfig:"PORT"     required:"true"`
 	Database string `envconfig:"DATABASE" required:"true"`
 
-	WithDebug bool `envconfig:"WITH_DEBUG" default:"false" `
+	WithDebug bool `default:"false" envconfig:"WITH_DEBUG"`
 }
 
 const connStringTmpl = "postgres://%s:%s@%s:%s/%s"
