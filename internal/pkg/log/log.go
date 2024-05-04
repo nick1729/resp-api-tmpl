@@ -11,7 +11,7 @@ import (
 
 const defaultLoglevel = zerolog.InfoLevel
 
-// Init - initialises logger.
+// Init - initializes logger.
 func Init(cfg config.Log) *zerolog.Logger {
 	levels := map[string]zerolog.Level{
 		"debug": zerolog.DebugLevel,

@@ -1,10 +1,8 @@
 package handler
 
 import (
-	"os"
-
-	"github.com/davecgh/go-spew/spew"
 	"github.com/gofiber/fiber/v2"
+
 	"github.com/nick1729/resp-api-tmpl/internal/app/service/correction"
 	"github.com/nick1729/resp-api-tmpl/internal/pkg/http/protocol"
 )
@@ -19,16 +17,14 @@ func (cr *correctionResource) handleGet(ctx *fiber.Ctx) error {
 		data correction.GetReq
 	)
 
-	b := ctx.Body()
-
-	err := req.UnmarshalJSON(b)
-
-	spew.Dump(req)
-	os.Exit(1)
-
-	err = ctx.BodyParser(&req)
+	err := req.UnmarshalJSON(ctx.Body())
 	if err != nil {
 		return ctx.SendString("decoding request")
+	}
+
+	err = data.UnmarshalJSON(req.Data)
+	if err != nil {
+		return ctx.SendString("decoding data")
 	}
 
 	resp, err := cr.service.Get(ctx.Context(), &data)

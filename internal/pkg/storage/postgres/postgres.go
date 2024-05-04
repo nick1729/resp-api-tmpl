@@ -4,12 +4,13 @@ import (
 	"context"
 	"time"
 
-	"github.com/nick1729/resp-api-tmpl/internal/pkg/config"
-	"github.com/nick1729/resp-api-tmpl/internal/pkg/errors"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+
+	"github.com/nick1729/resp-api-tmpl/internal/pkg/config"
+	"github.com/nick1729/resp-api-tmpl/internal/pkg/errors"
 )
 
 type Service struct {

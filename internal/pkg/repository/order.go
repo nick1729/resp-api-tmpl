@@ -3,9 +3,10 @@ package repository
 import (
 	"context"
 
+	"gorm.io/gorm"
+
 	"github.com/nick1729/resp-api-tmpl/internal/pkg/errors"
 	"github.com/nick1729/resp-api-tmpl/internal/pkg/model"
-	"gorm.io/gorm"
 )
 
 func (r *Repository) GetOrderByID(ctx context.Context, id string) (*model.Order, error) {

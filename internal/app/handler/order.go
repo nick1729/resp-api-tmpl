@@ -2,6 +2,7 @@ package handler
 
 import (
 	"github.com/gofiber/fiber/v2"
+
 	"github.com/nick1729/resp-api-tmpl/internal/app/service/order"
 )
 
@@ -19,7 +20,6 @@ func (or *orderResource) handleGet(ctx *fiber.Ctx) error {
 
 	resp, respErr := or.service.Get(ctx.Context(), &req)
 	if respErr != nil {
-
 		return ctx.SendStatus(fiber.StatusInternalServerError)
 	}
 

@@ -42,19 +42,19 @@ func NewDBLogger(logger zerolog.Logger) *dbLogger {
 	}
 }
 
-func (l *dbLogger) Info(ctx context.Context, msg string, args ...any) {
+func (l *dbLogger) Info(_ context.Context, msg string, args ...any) {
 	l.logEvent(zerolog.InfoLevel, msg, args)
 }
 
-func (l *dbLogger) Warn(ctx context.Context, msg string, args ...any) {
+func (l *dbLogger) Warn(_ context.Context, msg string, args ...any) {
 	l.logEvent(zerolog.WarnLevel, msg, args)
 }
 
-func (l *dbLogger) Error(ctx context.Context, msg string, args ...any) {
+func (l *dbLogger) Error(_ context.Context, msg string, args ...any) {
 	l.logEvent(zerolog.ErrorLevel, msg, args)
 }
 
-func (l *dbLogger) Trace(ctx context.Context, begin time.Time, fc func() (sql string, rowsAffected int64), err error) {
+func (l *dbLogger) Trace(_ context.Context, begin time.Time, fc func() (sql string, rowsAffected int64), err error) {
 	zlogLevel := l.zlog.GetLevel()
 	if zlogLevel == zerolog.Disabled {
 		return
@@ -65,10 +65,12 @@ func (l *dbLogger) Trace(ctx context.Context, begin time.Time, fc func() (sql st
 
 	buildLogger := func() (loggerPtr *zerolog.Logger, sql string) {
 		sql, rows := fc()
+
 		logCtx = logCtx.Err(err)
 		if rows >= 0 {
 			logCtx = logCtx.Int64("rowsAffected", rows)
 		}
+
 		logger := logCtx.Logger()
 		return &logger, sql
 	}

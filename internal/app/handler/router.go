@@ -2,6 +2,7 @@ package handler
 
 import (
 	"github.com/gofiber/fiber/v2"
+
 	repo "github.com/nick1729/resp-api-tmpl/internal/pkg/repository"
 )
 
@@ -14,15 +15,13 @@ func RouteRegister(app *fiber.App, repo *repo.Repository) {
 
 	apiGroup.Get("/healthcheck", healthcheck)
 
-	correctionGroup := app.Group("/correction")
+	correctionGroup := apiGroup.Group("/correction")
 	correctionGroup.Post("/get", res.correctionResource.handleGet)
 	correctionGroup.Post("/list", res.correctionResource.handleList)
 	correctionGroup.Post("/update", res.correctionResource.handleUpdate)
 
-	orderGroup := app.Group("/order")
+	orderGroup := apiGroup.Group("/order")
 	orderGroup.Post("/get", res.orderResource.handleGet)
 	orderGroup.Post("/list", res.orderResource.handleList)
 	orderGroup.Post("/update", res.orderResource.handleUpdate)
-
-	// other groups
 }

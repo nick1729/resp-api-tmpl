@@ -2,11 +2,13 @@ package server
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/pprof"
+	"github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/rs/zerolog/log"
+
 	"github.com/nick1729/resp-api-tmpl/internal/app/handler"
 	"github.com/nick1729/resp-api-tmpl/internal/pkg/config"
 	"github.com/nick1729/resp-api-tmpl/internal/pkg/repository"
-	"github.com/rs/zerolog/log"
 )
 
 // Server - structure for HTTP server.
@@ -20,7 +22,7 @@ func (s *Server) Notify() <-chan error {
 	return s.notify
 }
 
-// Run  - starts an HTTP server at address in a separate goroutine.
+// Run - starts an HTTP server at address in a separate goroutine.
 func (s *Server) Run(address string) {
 	go func() {
 		err := s.app.Listen(address)
@@ -30,7 +32,7 @@ func (s *Server) Run(address string) {
 	}()
 }
 
-// Stop  - stops the server.
+// Stop - stops the server.
 func (s *Server) Stop() {
 	err := s.app.Shutdown()
 	if err != nil {
@@ -38,7 +40,7 @@ func (s *Server) Stop() {
 	}
 }
 
-// New  - creates a new HTTP server.
+// New - creates a new HTTP server.
 func New(cfg config.Server, appName string, repo *repository.Repository) *Server {
 	app := fiber.New(fiber.Config{
 		AppName:               appName,
@@ -46,9 +48,10 @@ func New(cfg config.Server, appName string, repo *repository.Repository) *Server
 		DisableStartupMessage: true,
 	})
 
-	app.Server().Logger = &log.Logger // TODO
-	app.Use(cors.New())
-	//app.Use(pprof.New())
+	app.Use(recover.New())
+	app.Use(pprof.New(pprof.Config{Prefix: "/resp-api-tmpl/v1"}))
+
+	app.Server().Logger = &log.Logger
 
 	handler.RouteRegister(app, repo)
 

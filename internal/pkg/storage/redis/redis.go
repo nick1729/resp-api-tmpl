@@ -4,9 +4,10 @@ import (
 	"context"
 	"time"
 
+	"github.com/redis/go-redis/v9"
+
 	"github.com/nick1729/resp-api-tmpl/internal/pkg/config"
 	"github.com/nick1729/resp-api-tmpl/internal/pkg/errors"
-	"github.com/redis/go-redis/v9"
 )
 
 type Service struct {
@@ -41,8 +42,8 @@ func New(ctx context.Context, cfg config.Redis) (Service, error) {
 	return resp, nil
 }
 
-func (p Service) Close() {
-	p.client.Close()
+func (s Service) Close() {
+	s.client.Close()
 }
 
 func (s Service) Ping(ctx context.Context) error {
